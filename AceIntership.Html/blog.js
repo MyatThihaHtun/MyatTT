@@ -71,25 +71,37 @@ function updateBlog(id, title, author, content) {
     const jsonBlog = JSON.stringify(lst);
     localStorage.setItem(tblBlog, jsonBlog);
 
-    successMessage('updating successful.');
+    //successMessage('updating successful.');
 }
 
 function deleteBlog(id) {
-    let result = confirm("are you sure want to delete?");
-    if(!result) return;
-    let lst = getBlogs();
+    // let result = confirm("are you sure want to delete?");
+    let result = Notiflix;
+    if (!result) return;
+    Notiflix.Confirm.show(
+        'Notiflix Confirm',
+        'Do you want to Delete? >__<',
+        'Yes',
+        'No',
+        function okCb() {
+            let lst = getBlogs();
 
-    const items = lst.filter(x => x.id === id);
+            const items = lst.filter(x => x.id === id);
 
-    if (items.length == 0) {
-        console.log("no data found.");
-        return;
-    }
-    lst = lst.filter(x => x.id !== id);
-    const jsonBlog = JSON.stringify(lst);
-    localStorage.setItem(tblBlog, jsonBlog);
-    successMessage("Deleting successful.");
-    getBlogTable();
+            if (items.length == 0) {
+                console.log("no data found.");
+                return;
+            }
+            lst = lst.filter(x => x.id !== id);
+            const jsonBlog = JSON.stringify(lst);
+            localStorage.setItem(tblBlog, jsonBlog);
+            successMessage("Deleting successful.");
+            getBlogTable();
+        },
+        function cancelCb() {
+            errorMessage("Try Again");
+        },
+    );
 }
 
 function uuidv4() {
@@ -114,22 +126,42 @@ $('#btnSave').click(function () {
     const author = $('#txtAuthor').val();
     const content = $('#txtContent').val();
 
-    if (blogId === null) {
-        createBlog(title, author, content);
+    if (!title || !author || !content) {
+        errorMessage("Required.");
+        return;
     }
-    else{
-        updateBlog(blogId, title, author, content);
-        blogId = null;
-    }
-    getBlogTable();
+    Notiflix.Loading.hourglass();
+
+    setTimeout(() => {
+        Notiflix.Loading.remove();
+        if (blogId === null) {
+            createBlog(title, author, content);
+            successMessage('Create Success');
+        }
+        else {
+            updatBlog(blogId, title, author, content);
+            blogId = null;
+            successMessage('Update Success!');
+        }
+        clearControls();
+        getBlogTable();
+    }, 3000);
 })
 
 function successMessage(message) {
-    alert(message);
+    Swal.fire({
+        title: "Success!",
+        text: message,
+        icon: "success"
+    });
 }
 
 function errorMessage(message) {
-    alert(message);
+    Swal.fire({
+        title: "Error!",
+        text: message,
+        icon: "error"
+    });
 }
 
 function clearControls() {
@@ -160,3 +192,12 @@ function getBlogTable() {
     });
     $('#tbody').html(htmlRows);
 }
+
+
+
+
+
+
+
+
+
