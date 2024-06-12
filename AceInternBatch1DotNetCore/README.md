@@ -1,0 +1,5 @@
+- ASP.NET Core Web AOI
+  - C# - Database
+	- Ado.Net (old school)
+	- Dapper
+	- EFCore
