@@ -62,8 +62,9 @@ namespace AceInternBatch1DotNetCore.RestApi.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateBlog(int id, TblBlog blog)
         {
+            blog.BlogID = id;
             using IDbConnection db = new SqlConnection(_connectionStringBuilder.ConnectionString);
-            int result = db.Execute(Quaries.BlogUpdate, new { BlogId = id });
+            int result = db.Execute(Quaries.BlogUpdate, blog);
             string message = result > 0 ? "Updating Successful." : "Updating Failed.";
             return Ok(message);
         }
@@ -117,9 +118,9 @@ namespace AceInternBatch1DotNetCore.RestApi.Controllers
       WHERE BlogId = @BlogId";
 
         public static string BlogUpdate { get; } = @"UPDATE [dbo].[Tbl_Blog]
-   SET [BlogTitle] = 'title'
-      ,[BlogAuthor] = 'author'
-      ,[BlogContent] = 'content'
+   SET [BlogTitle] = @BlogTitle
+      ,[BlogAuthor] = @BlogAuthor
+      ,[BlogContent] = @BlogContent
  WHERE BlogId = @BlogId";
     }
 
