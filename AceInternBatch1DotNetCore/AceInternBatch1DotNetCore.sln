@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AceInternBatch1DotNetCore.MiniKpayWebApi", "AceInternBatch1DotNetCore.MiniKpayWebApi\AceInternBatch1DotNetCore.MiniKpayWebApi.csproj", "{C19E15CF-0F08-435B-98F3-0E1085AABC45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{CBEC3016-C022-401C-B27F-A490FDAAC006}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBEC3016-C022-401C-B27F-A490FDAAC006}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBEC3016-C022-401C-B27F-A490FDAAC006}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C19E15CF-0F08-435B-98F3-0E1085AABC45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C19E15CF-0F08-435B-98F3-0E1085AABC45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C19E15CF-0F08-435B-98F3-0E1085AABC45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C19E15CF-0F08-435B-98F3-0E1085AABC45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
