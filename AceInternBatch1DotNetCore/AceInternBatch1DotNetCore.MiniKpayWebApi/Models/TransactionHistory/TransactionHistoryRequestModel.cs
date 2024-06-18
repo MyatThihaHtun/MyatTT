@@ -1,4 +1,4 @@
-﻿namespace AceInternBatch1DotNetCore.MiniKpayWebApi.Features.TransactionHistory
+﻿namespace AceInternBatch1DotNetCore.MiniKpayWebApi.Models.TransactionHistory
 {
     public class TransactionHistoryRequestModel
     {

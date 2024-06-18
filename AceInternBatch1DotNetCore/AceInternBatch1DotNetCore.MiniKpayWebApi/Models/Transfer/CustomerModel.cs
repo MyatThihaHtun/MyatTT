@@ -1,4 +1,4 @@
-﻿namespace AceInternBatch1DotNetCore.MiniKpayWebApi.Features.Models
+﻿namespace AceInternBatch1DotNetCore.MiniKpayWebApi.Models.Transfer
 {
     public class CustomerModel
     {

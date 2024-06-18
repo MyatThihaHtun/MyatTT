@@ -1,6 +1,6 @@
-﻿using AceInternBatch1DotNetCore.MiniKpayWebApi.Features.Models;
-using System.Data;
+﻿using System.Data;
 using Dapper;
+using AceInternBatch1DotNetCore.MiniKpayWebApi.Models.Transfer;
 
 namespace AceInternBatch1DotNetCore.MiniKpayWebApi.Features.TransactionHistory
 {
