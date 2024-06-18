@@ -1,12 +1,11 @@
 ﻿using System.Data;
 using Dapper;
-using AceInternBatch1DotNetCore.MiniKpayWebApi.Models.Transfer;
+using AceInternBatch1DotNetCore.MiniKpayWebApi.Models;
 
 namespace AceInternBatch1DotNetCore.MiniKpayWebApi.Features.TransactionHistory
 {
     public class TransactionHistoryDA
     {
-
         private readonly IDbConnection _db;
 
         public TransactionHistoryDA(IDbConnection db)
@@ -14,29 +13,69 @@ namespace AceInternBatch1DotNetCore.MiniKpayWebApi.Features.TransactionHistory
             _db = db;
         }
 
-        public bool IsExistCustomerCode(string customerCode)
+        public async Task<bool> IsExistCustomerCode(string customerCode)
         {
-            string query = "select * from Tbl_Customer with (nolock) where CustomerCode = @CustomerCode";
-            var item = _db.Query<CustomerModel>(query, new { CustomerCode = customerCode }).FirstOrDefault();
-            // Transaction History By Customer Code
-            //return item == null ? false : true;
-            //return item != null ? true : false;
-            //return item != null;
+            var item = await _db.QueryFirstOrDefaultAsync<CustomerModel>
+                (Shared.CommonQuery.IsExistCustomerCode, new { CustomerCode = customerCode });
+
             return item is not null;
         }
 
-        public List<CustomerTransactionHistoryModel> TransactionHistoryByCustomerCode(string customerCode)
+        public async Task<List<CustomerTransactionHistoryModel>> TransactionHistoryByCustomerCode(string customerCode)
         {
-            var lst = new List<CustomerTransactionHistoryModel>();
-
-            string query = @"select CTH.* from Tbl_CustomerTransactionHistory CTH
-inner join Tbl_Customer C on CTH.FromMobileNo = C.MobileNo
-where CustomerCode = @CustomerCode";
-
-            lst = _db.Query<CustomerTransactionHistoryModel>(query, new { CustomerCode = customerCode }).ToList();
+            var lst = (await _db.QueryAsync<CustomerTransactionHistoryModel>
+                (Shared.CommonQuery.TransactionHistoryByCustomerCode, new { CustomerCode = customerCode })).ToList();
 
             return lst;
         }
-       
+
+        public async Task<bool> IsExistTransactionDate(string transactionDate)
+        {
+            var strDate = transactionDate;
+            DateTime datetime = DateTime.Parse(strDate);
+            var item = await _db.QueryFirstOrDefaultAsync<CustomerTransactionHistoryModel>(
+                Shared.CommonQuery.TransactionHistoryByDatetime, new { TransactionDate = datetime });
+            return item is not null;
+        }
+        public async Task<List<CustomerTransactionHistoryModel>> TransactionHistoryByDatetime(string transactionDate)
+        {
+            var strDate = transactionDate;
+            DateTime datetime = DateTime.Parse(strDate);
+            var lst = (await _db.QueryAsync<CustomerTransactionHistoryModel>(Shared.CommonQuery.TransactionHistoryByDatetime, new
+            {
+                TransactionDate = datetime
+            }))
+                .ToList();
+            return lst;
+        }
+
+        //public async Task<List<CustomerTransactionHistoryModel>> GenerateTransactionHistory(int count)
+        //{
+        //    var model = new List<CustomerTransactionHistoryModel>();
+        //    var random = new Random();
+
+        //    for (int i = 0; i < count; i++)
+        //    {
+        //        var item = new CustomerTransactionHistoryModel
+        //        {
+        //            FromMobileNo = GenerateRandomMobileNumber(random),
+        //            ToMobileNo = GenerateRandomMobileNumber(random),
+        //            TransactionDate = DateTime.UtcNow.AddDays(-random.Next(0, 365)),
+        //            Amount = (decimal)(random.NextDouble() * 1000)
+        //        };
+        //        model.Add(item);
+        //    }
+
+        //    foreach (var item in model)
+        //    {
+        //        await _db.ExecuteAsync(CommonQuery.InsertTransactionHistory, item);
+        //    }
+        //    return model;
+        //}
+
+        //private string GenerateRandomMobileNumber(Random random)
+        //{
+        //    return "09" + random.Next(100000000, 999999999).ToString();
+        //}
     }
 }

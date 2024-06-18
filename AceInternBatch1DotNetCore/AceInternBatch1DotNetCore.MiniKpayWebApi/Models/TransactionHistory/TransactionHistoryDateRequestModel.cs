@@ -1,15 +1,15 @@
 ﻿namespace AceInternBatch1DotNetCore.MiniKpayWebApi.Models.TransactionHistory
 {
-    public class TransactionHistoryRequestModel
+    public class TransactionHistoryDateRequestModel
     {
-        public string? CustomerCode { get; set; }
+        public string TransactionDate { get; set; }
 
-        public Result<TransactionHistoryResponseModel> IsValid()
+        public Result<TransactionHistoryResponseModel> IsTransactionDateValid()
         {
             try
             {
-                if (string.IsNullOrEmpty(CustomerCode))
-                    return Result<TransactionHistoryResponseModel>.FailureResult("Invalid Customer Code.");
+                if (string.IsNullOrEmpty(TransactionDate))
+                    return Result<TransactionHistoryResponseModel>.FailureResult("Invalid DateTime.");
                 return Result<TransactionHistoryResponseModel>.SuccessResult();
             }
             catch (Exception ex)

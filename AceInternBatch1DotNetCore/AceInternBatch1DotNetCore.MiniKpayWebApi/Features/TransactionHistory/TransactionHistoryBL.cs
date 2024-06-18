@@ -1,4 +1,5 @@
-﻿using AceInternBatch1DotNetCore.MiniKpayWebApi.Models.TransactionHistory;
+﻿using AceInternBatch1DotNetCore.MiniKpayWebApi.Models;
+using AceInternBatch1DotNetCore.MiniKpayWebApi.Models.TransactionHistory;
 
 namespace AceInternBatch1DotNetCore.MiniKpayWebApi.Features.TransactionHistory
 {
@@ -11,24 +12,34 @@ namespace AceInternBatch1DotNetCore.MiniKpayWebApi.Features.TransactionHistory
             _transactionHistoryDA = transactionHistoryDA;
         }
 
-        public TransactionHistoryResponseModel TransactionHistory(TransactionHistoryRequestModel requestModel)
+        public async Task<Result<TransactionHistoryResponseModel>> TransactionHistory(
+            TransactionHistoryRequestModel requestModel)
         {
-            TransactionHistoryResponseModel model = new TransactionHistoryResponseModel();
-
-            bool isExist = _transactionHistoryDA.IsExistCustomerCode(requestModel.CustomerCode!);
+            bool isExist = await _transactionHistoryDA.IsExistCustomerCode(requestModel.CustomerCode!);
             if (!isExist)
+                return Result<TransactionHistoryResponseModel>.FailureResult("Customer doesn't exist.");
+
+            var lst = await _transactionHistoryDA.TransactionHistoryByCustomerCode(requestModel.CustomerCode!);
+            var model = new TransactionHistoryResponseModel()
             {
-                model.IsSuccess = false;
-                model.Message = "Customer doesn't exist.";
-                return model;
-            }
+                Data = lst
+            };
+            return Result<TransactionHistoryResponseModel>.SuccessResult(model);
+        }
 
+        public async Task<Result<TransactionHistoryResponseModel>> TransactionDateHistory(
+            TransactionHistoryDateRequestModel requestModel)
+        {
+            bool isExit = await _transactionHistoryDA.IsExistTransactionDate(requestModel.TransactionDate);
+            if (!isExit)
+                return Result<TransactionHistoryResponseModel>.FailureResult("History Date doesn't exist.");
 
-            var lst = _transactionHistoryDA.TransactionHistoryByCustomerCode(requestModel.CustomerCode!);
-            model.IsSuccess = true;
-            model.Message = "Success.";
-            model.Data = lst;
-            return model;
+            var lst = await _transactionHistoryDA.TransactionHistoryByDatetime(requestModel.TransactionDate);
+            var model = new TransactionHistoryResponseModel()
+            {
+                Data = lst
+            };
+            return Result<TransactionHistoryResponseModel>.SuccessResult(model);
         }
     }
 }
