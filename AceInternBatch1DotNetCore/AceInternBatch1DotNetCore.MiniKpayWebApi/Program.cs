@@ -1,6 +1,5 @@
-using AceInternBatch1DotNetCore.MiniKpayWebApi.Features.TransactionHistory;
+using AceInternBatch1DotNetCore.MiniKpayWebApi.Features;
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.DependencyInjection;
 using System.Data;
 
 var builder = WebApplication.CreateBuilder(args);
